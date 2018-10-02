@@ -8,75 +8,90 @@ namespace Calculator
 {
     class Program
     {
-        static void PrintWelcomeMessage()
+        private static void PrintWelcomeMessage()
         {
             Console.WriteLine("Welcome to the Calculator!");
         }
 
-        static string GetStringInput(string prompt)
+        private static string GetStringInput(string prompt)
         {
             Console.WriteLine(prompt);
             return Console.ReadLine();
-            }
+        }
 
-        static void PerformOneCalculation()
+        private static string GetOperator(string prompt)
         {
-            string op = GetStringInput("Please enter the operator: ");
+            string op;
+            do
+            {
+                op = GetStringInput(prompt);
+            } while (!(op == "+" | op == "-" | op == "/" | op == "*"));
+            return op;
+        }
 
+        private static float GetNumber(string prompt)
+        {
+            string rawInput;
+            float number;
+            do
+            {
+                rawInput = GetStringInput(prompt);
+            } while (!float.TryParse(rawInput, out float result));
+            number = float.Parse(rawInput);
+            return number;
+        }
+
+        private static float[] GetNumberArray(string op)
+        {
             int iterations = int.Parse(GetStringInput($"How many numbers to do you want to {op}"));
 
             float[] numbers = new float[iterations];
             for (int i = 0; i < iterations; i++)
             {
-                numbers[i] = float.Parse(GetStringInput($"Please enter number {i + 1}"));
+                numbers[i] = GetNumber($"Please enter number {i + 1}");
             }
+            return numbers;
+        }
 
-            if (op == "+")
+        private static float CalculateAnswer(string op, float[] numbers)
+        {
+            float result = numbers[0];
+            for (int i = 1; i < numbers.Length; i ++)
             {
-                double result = 0;
-                for (int i = 0; i < numbers.Length; i++)
+                if (op == "+")
                 {
                     result += numbers[i];
                 }
-                Console.WriteLine("The result is {0}", result);
-            }
-            else if (op == "-")
-            {
-                double result = 0;
-                for (int i = 0; i < numbers.Length; i++)
+                else if (op == "-")
                 {
                     result -= numbers[i];
                 }
-                Console.WriteLine("The result is {0}", result);
-            }
-            else if (op == "*")
-            {
-                double result = 1;
-                for (int i = 0; i < numbers.Length; i++)
+                else if (op == "*")
                 {
                     result *= numbers[i];
                 }
-                Console.WriteLine("The result is {0}", result);
-            }
-            else if (op == "/")
-            {
-                double result = numbers[0];
-                for (int i = 1; i < numbers.Length; i++)
+                else if (op == "/")
                 {
                     result /= numbers[i];
                 }
-                Console.WriteLine("The result is {0}", result);
             }
-            else
-            {
-                Console.WriteLine("The operator you entered is not valid");
-            }
+            return result;
+        }
+        private static void PerformOneCalculation()
+        {
+            string op = GetOperator("\nPlease enter the operator: ");
+            float[] numbers = GetNumberArray(op);
+            float result = CalculateAnswer(op, numbers);
+            Console.WriteLine($"The answer is {result}");
         }
         static void Main(string[] args)
         {
             PrintWelcomeMessage();
-            PerformOneCalculation();
-            Console.ReadLine();
+
+            while (true)
+            {
+                PerformOneCalculation();
+            }            
         }
     }
 }
