@@ -41,22 +41,22 @@ namespace Calculator
         private static float GetFloat(string prompt)
         {
             string rawInput;
+            float number;
             do
             {
                 rawInput = GetStringInput(prompt);
-            } while (!float.TryParse(rawInput, out float result));
-            float number = float.Parse(rawInput);
+            } while (!float.TryParse(rawInput, out number));
             return number;
         }
 
         private static int GetInteger(string prompt)
         {
             string rawInput;
+            int integer;
             do
             {
                 rawInput = GetStringInput(prompt);
-            } while (!int.TryParse(rawInput, out int result));
-            int integer = int.Parse(rawInput);
+            } while (!int.TryParse(rawInput, out integer));
             return integer;
         }
 
@@ -111,11 +111,11 @@ namespace Calculator
         private static DateTime GetDate()
         {
             string rawDate;
+            DateTime date;
             do
             {
                 rawDate = GetStringInput("Please enter a date in the format mm/dd/yy");
-            } while (!DateTime.TryParse(rawDate, out DateTime result));
-            DateTime date = DateTime.Parse(rawDate);
+            } while (!DateTime.TryParse(rawDate, out date));
             return date;
         }
 
