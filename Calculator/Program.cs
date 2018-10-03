@@ -14,8 +14,6 @@ namespace Calculator
             dateModeId = 2,
         }
 
-        // const int numberModeId = 1;
-        // const int dateModeId = 2;
         private static void PrintWelcomeMessage()
         {
             Console.WriteLine("Welcome to the Calculator!");

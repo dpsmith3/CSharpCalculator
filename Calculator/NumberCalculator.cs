@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Calculator
 {
@@ -20,31 +21,39 @@ namespace Calculator
             return numbers;
         }
 
-        private static float CalculateAnswer(string op, float[] numbers)
+        private static float? CalculateAnswer(string op, float[] numbers)
         {
             string logMessage = $"{numbers[0]} ";
+
             
-            float result = numbers[0];
             for (int i = 1; i < numbers.Length; i++)
             {
                 logMessage += $"{op} {numbers[i]} ";
-                if (op == "+")
-                {
-                    result += numbers[i];
-                }
-                else if (op == "-")
-                {
-                    result -= numbers[i];
-                }
-                else if (op == "*")
-                {
-                    result *= numbers[i];
-                }
-                else if (op == "/")
-                {
-                    result /= numbers[i];
-                }
             }
+
+            float? result;
+
+            if (op == "+")
+            {
+                result = numbers.Sum();
+            }
+            else if (op == "-")
+            {
+                result = numbers.Aggregate((acc, curr) => (acc - curr));
+            }
+            else if (op == "*")
+            {
+                result = numbers.Aggregate((acc, curr) => (acc * curr));
+            }
+            else if (op == "/")
+            {
+                result = numbers.Aggregate((acc, curr) => (acc / curr));
+            }
+            else
+            {
+                result = null;
+            }
+
             logMessage += $"= {result}";
             Logger.logAppend(logMessage);
             return result;
@@ -53,7 +62,7 @@ namespace Calculator
         {
             string op = UserInput.GetOperator("\nPlease enter the operator: ");
             float[] numbers = GetNumberArray(op);
-            float result = CalculateAnswer(op, numbers);
+            float? result = CalculateAnswer(op, numbers);
             Console.WriteLine($"The answer is {result}");
         }
     }
