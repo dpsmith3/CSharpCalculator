@@ -26,6 +26,8 @@ namespace Calculator
             int daysToAdd = UserInput.GetInteger("How many days would you like to add?");
             DateTime newDate = CalculateDate(date, daysToAdd);
             Console.WriteLine($"The result is {newDate}");
+            string logMessage = $"{daysToAdd} days after {date} is {newDate}";
+            Logger.logAppend(logMessage);
         }
     }
 }

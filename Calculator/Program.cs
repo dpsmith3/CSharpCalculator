@@ -8,33 +8,43 @@ namespace Calculator
 {
     class Program
     {
+        public enum Modes {
+
+            numberModeId = 1,
+            dateModeId = 2,
+        }
+
+        // const int numberModeId = 1;
+        // const int dateModeId = 2;
         private static void PrintWelcomeMessage()
         {
             Console.WriteLine("Welcome to the Calculator!");
         }
 
-        private static string GetCalculationMode()
+        private static int GetCalculationMode()
         {
-            string mode;
+            int mode;
             
             do
             {
-                mode = UserInput.GetStringInput("Which calculator mode do you want?\n\t1\tNumber mode\n\t2\tDate mode");
-            } while (!(mode == "1" | mode == "2"));
+                mode = UserInput.GetInteger("Which calculator mode do you want?\n\t1\tNumber mode\n\t2\tDate mode");
+            } while (!Enum.IsDefined(typeof(Modes), mode));
+            Logger.logAppend($"Mode {mode} chosen");
             return mode;
         }
 
         public static void Main(string[] args)
         {
+            Logger.startLog($"Starting the calculator");
             PrintWelcomeMessage();
-
+            
             while (true)
             {
-                string calculationMode = GetCalculationMode();
-                if (calculationMode == "1")
+                int calculationMode = GetCalculationMode();
+                if (calculationMode == (int) Modes.numberModeId)
                 {
                     NumberCalculator.PerformOneNumberCalculation();
-                } else if (calculationMode == "2")
+                } else if (calculationMode == (int) Modes.dateModeId)
                 {
                     DateCalculator.PerformOneDateCalculation();
                 }

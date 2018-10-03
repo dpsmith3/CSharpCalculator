@@ -22,9 +22,12 @@ namespace Calculator
 
         private static float CalculateAnswer(string op, float[] numbers)
         {
+            string logMessage = $"{numbers[0]} ";
+            
             float result = numbers[0];
             for (int i = 1; i < numbers.Length; i++)
             {
+                logMessage += $"{op} {numbers[i]} ";
                 if (op == "+")
                 {
                     result += numbers[i];
@@ -42,6 +45,8 @@ namespace Calculator
                     result /= numbers[i];
                 }
             }
+            logMessage += $"= {result}";
+            Logger.logAppend(logMessage);
             return result;
         }
         public static void PerformOneNumberCalculation()
