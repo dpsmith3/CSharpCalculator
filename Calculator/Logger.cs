@@ -14,7 +14,7 @@ namespace Calculator
             using (StreamWriter file =
                 new StreamWriter(@"C:\Work\CSharpTutorial\Calculator\log.txt", true))
             {
-                file.WriteLine($"{DateTime.Now} \t {text}");
+                file.WriteLine($"{DateTime.Now}\t{text}");
             }
         }
     }
