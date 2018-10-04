@@ -42,26 +42,25 @@ namespace Calculator
 
             float result;
 
-            if (op == "+")
+            switch (op)
             {
-                result = numbers.Sum();
+                case "+":
+                    result = numbers.Sum();
+                    break;
+                case "-":
+                    result = numbers.Aggregate((acc, curr) => (acc - curr));
+                    break;
+                case "*":
+                    result = numbers.Aggregate((acc, curr) => (acc * curr));
+                    break;
+                case "/":
+                    result = numbers.Aggregate((acc, curr) => (acc / curr));
+                    break;
+                default:
+                    result = -1;
+                    throw new Exception("Error calculating answer.");
             }
-            else if (op == "-")
-            {
-                result = numbers.Aggregate((acc, curr) => (acc - curr));
-            }
-            else if (op == "*")
-            {
-                result = numbers.Aggregate((acc, curr) => (acc * curr));
-            }
-            else if (op == "/")
-            {
-                result = numbers.Aggregate((acc, curr) => (acc / curr));
-            }
-            else
-            {
-                result = -1;
-            }
+
             logMessage += $"= {result}";
             Logger.logAppend(logMessage);
             return result;
@@ -70,8 +69,17 @@ namespace Calculator
         {
             string op = UserInput.GetOperator("\nPlease enter the operator: ");
             List<float> numbers = GetNumbers(op);
-            float result = CalculateAnswer(op, numbers);
-            Console.WriteLine($"The answer is {result}");
+
+            try
+            {
+                float result = CalculateAnswer(op, numbers);
+                Console.WriteLine($"The answer is {result}");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("There was an error when calculating the number: " + e.Message);
+                Logger.logAppend("There was an error when calculating the number: " + e.Message);
+            }
         }
     }
 }

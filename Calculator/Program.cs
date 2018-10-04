@@ -10,8 +10,8 @@ namespace Calculator
     {
         public enum Modes {
 
-            numberModeId = 1,
-            dateModeId = 2,
+            numberMode = 1,
+            dateMode = 2,
         }
 
         private static void PrintWelcomeMessage()
@@ -38,13 +38,24 @@ namespace Calculator
             
             while (true)
             {
-                int calculationMode = GetCalculationMode();
-                if (calculationMode == (int) Modes.numberModeId)
+                try
                 {
-                    NumberCalculator.PerformOneNumberCalculation();
-                } else if (calculationMode == (int) Modes.dateModeId)
+                    int calculationMode = GetCalculationMode();
+
+                    switch (calculationMode)
+                    {
+                        case (int)Modes.numberMode:
+                            NumberCalculator.PerformOneNumberCalculation();
+                            break;
+                        case (int)Modes.dateMode:
+                            DateCalculator.PerformOneDateCalculation();
+                            break;
+                    }
+                }
+                catch (Exception e)
                 {
-                    DateCalculator.PerformOneDateCalculation();
+                    Console.WriteLine("There was an error: " + e.Message);
+                    Logger.logAppend("There was an error: " + e.Message);
                 }
             }            
         }
