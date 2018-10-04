@@ -1,37 +1,46 @@
 ﻿using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Calculator
 {
     class NumberCalculator
     {
-        private static float[] GetNumberArray(string op)
+        private static List<float> GetNumbers(string op)
         {
-            int iterations;
-            do
+            List<float> numbers = new List<float>();
+            Console.WriteLine($"Please enter the numbers you would like to {op}");
+            
+            bool keepReadingNumbers = true;
+            while (keepReadingNumbers)
             {
-                iterations = UserInput.GetInteger($"How many numbers to do you want to {op}");
-            } while (iterations < 1);
+                Console.WriteLine("  Please enter the next number (or press return to perform calculation): ");
+                if (float.TryParse(Console.ReadLine(), out float result))
+                {
+                    numbers.Add(result);
+                }
+                else if (numbers.Count < 1)
+                {
 
-            float[] numbers = new float[iterations];
-            for (int i = 0; i < iterations; i++)
-            {
-                numbers[i] = UserInput.GetFloat($"Please enter number {i + 1}");
+                }
+                else
+                {
+                    keepReadingNumbers = false;
+                }
             }
             return numbers;
         }
 
-        private static float? CalculateAnswer(string op, float[] numbers)
+        private static float CalculateAnswer(string op, List<float> numbers)
         {
             string logMessage = $"{numbers[0]} ";
-
-            
-            for (int i = 1; i < numbers.Length; i++)
+                        
+            for (int i = 1; i < numbers.Count; i++)
             {
                 logMessage += $"{op} {numbers[i]} ";
             }
 
-            float? result;
+            float result;
 
             if (op == "+")
             {
@@ -51,9 +60,8 @@ namespace Calculator
             }
             else
             {
-                result = null;
+                result = -1;
             }
-
             logMessage += $"= {result}";
             Logger.logAppend(logMessage);
             return result;
@@ -61,8 +69,8 @@ namespace Calculator
         public static void PerformOneNumberCalculation()
         {
             string op = UserInput.GetOperator("\nPlease enter the operator: ");
-            float[] numbers = GetNumberArray(op);
-            float? result = CalculateAnswer(op, numbers);
+            List<float> numbers = GetNumbers(op);
+            float result = CalculateAnswer(op, numbers);
             Console.WriteLine($"The answer is {result}");
         }
     }
